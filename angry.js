@@ -11,7 +11,7 @@ function test() {
   
     
 
-    let ctl = new T.CubeTextureLoader().load(['madjordan.png', 'madkayla.png', 'madalyssa.png', 'madgabe.png', 'madjordan.png', 'madkayla.png']);
+    let ctl = new T.CubeTextureLoader().load(['angryjamie.png', 'madkayla.png', 'madalyssa.png', 'madgabe.png', 'madjordan.png', 'madkayla.png']);
     world.scene.background = ctl;
 
     let sphereGeom = new T.SphereGeometry(3.5, 50, 50);
