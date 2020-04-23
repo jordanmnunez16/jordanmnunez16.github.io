@@ -1,11 +1,19 @@
+//let img = document.getElementById("tmuny");
+let img = new Image(100,100);
+img.src = "tmuny.png";
+let img2 = new Image(100,100);
+img2.src = "invTmuny.png";
+let audio = new Audio("Gosha.mp3");
 
 window.onload = function () {
 
     let canvas = /** @type {HTMLCanvasElement} */ (document.getElementById("canvas1"));
     let context = canvas.getContext('2d');
 
-    
+    //let audio = this.document.createElement("AUDIO");
+    //audio.src = "Gosha.mp3";
 
+    
     context.translate(250,250);
     //context.lineWidth = 2;
     context.fillStyle = "rgb(255,0,0)";
@@ -29,11 +37,15 @@ window.onload = function () {
     let bgColor = "rgb(255,255,255)";
     let started = false;
     let maxed = false;
-    let max = 12500;
+    let max = 31500;
     let time;
     let invertColors = false;
     let color = initColor;
     let borderColor = initBorderColor;
+    let offset;
+    
+
+    context.drawImage(img,-25,-25,50,50);
     
     
 
@@ -89,10 +101,8 @@ window.onload = function () {
         
         
             
-        time = performance.now() % max;
-        if(maxed){
-            context.rotate(Math.PI/360);
-        }
+        time = (performance.now() - offset) % max;
+        
         
         
         
@@ -100,17 +110,44 @@ window.onload = function () {
         context.fillRect(-250,-250, 500, 500);
         let i;
         if(maxed){
-            for(i = 0; i < max / 100; i++){
+            
+            context.rotate(Math.PI/360);
+            for(i = 0; i < max / 242; i++){
                 drawOne(i);
             }
+            context.save();
+            for(let j = 0; j < 4; j++){
+                context.drawImage(img2, -100, -300, 200, 200);
+                context.rotate(Math.PI/2);
+            }
+            context.restore();
+            
         }
         else{
-            for(i = 0; i < time / 100; i++){
+            for(i = 0; i < time / 242; i++){
                 drawOne(i);
             }
+            context.save();
+            if(time > 15850){
+                
+                context.drawImage(img, -100,-300,200,200);
+            }
+            if(time > 19800){
+                context.rotate(Math.PI/2);
+                context.drawImage(img, -100,-300,200,200);
+            }
+            if(time > 23600){
+                context.rotate(Math.PI/2);
+                context.drawImage(img, -100,-300,200,200);
+            }
+            if(time > 27550){
+                context.rotate(Math.PI/2);
+                context.drawImage(img, -100,-300,200,200);
+            }
+            context.restore();
         }
         
-        if(i == max/ 100){
+        if(i >= max/ 242){
             maxed = true;
             invertColors = true;
         }
@@ -120,7 +157,14 @@ window.onload = function () {
     canvas.onclick = function(event){
         
         if(!started){
+            //time = performance.now() % max;
+            //while(time != 0){
+             //   time = performance.now() % max;
+            //}
+            offset = performance.now() % max;
+
             draw();
+            audio.play();
             started = true;
         }
         
