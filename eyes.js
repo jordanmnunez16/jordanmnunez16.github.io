@@ -1,13 +1,13 @@
 let colors = [];
-colors.push([255,120,255]);
-colors.push([255,120,255]);
-colors.push([255,120,255]);
-colors.push([255,120,255]);
-colors.push([255,120,255]);
-colors.push([255,120,255]);
-colors.push([255,120,255]);
-colors.push([255,120,255]);
-colors.push([255,120,255]);
+colors.push([255, 222, 218]);
+colors.push([255, 193, 207]);
+colors.push([248, 189, 196]);
+colors.push([249, 173, 160]);
+colors.push([239, 121, 138]);
+colors.push([226, 175, 222]);
+colors.push([206, 132, 173]);
+colors.push([141, 134, 201]);
+colors.push([90, 82, 161]);
 
 let curColors = [];
 curColors.push([255,255,255]);
@@ -19,6 +19,9 @@ curColors.push([255,255,255]);
 curColors.push([255,255,255]);
 curColors.push([255,255,255]);
 curColors.push([255,255,255]);
+
+// [number, time]
+let colorTimes = [];
 
 let incSteps = 50;
 
@@ -35,7 +38,79 @@ function giveColor(color){
     return "rgb(" + color[0] + "," + color[1] + "," + color[2] + ")";
 }
 
+function veryFirstMelody(startTime){
+    for(let i = 0; i < 9; i++){
+        colorTimes.push([i, startTime + i*425]);
+    }
+    
+    let checkpoint = startTime + 9*425 + 200;
+    colorTimes.push([8, checkpoint]);
+    colorTimes.push([7, checkpoint + 200]);
+    colorTimes.push([6, checkpoint + 400]);
+    colorTimes.push([7, checkpoint + 600]);
+    colorTimes.push([8, checkpoint + 800]);
 
+    let checkpoint2 = checkpoint + 1625;
+    colorTimes.push([1, checkpoint2]);
+    colorTimes.push([2, checkpoint2 + 150]);
+    colorTimes.push([1, checkpoint2 + 300]);
+    colorTimes.push([2, checkpoint2 + 450]);
+
+    let checkpoint3 = checkpoint2 + 975;
+
+    for(let i = 0; i < 9; i++){
+        colorTimes.push([i, checkpoint3 + i*425]);
+    }
+
+}
+
+function melody1(startTime){
+    for(let i = 0; i < 9; i++){
+        colorTimes.push([i, startTime + i*425]);
+    }
+    
+    let checkpoint = startTime + 9*425 + 200;
+    colorTimes.push([8, checkpoint]);
+    colorTimes.push([7, checkpoint + 200]);
+    colorTimes.push([6, checkpoint + 400]);
+    colorTimes.push([7, checkpoint + 600]);
+    colorTimes.push([8, checkpoint + 800]);
+
+    let checkpoint2 = checkpoint + 1625;
+    colorTimes.push([1, checkpoint2]);
+    colorTimes.push([2, checkpoint2 + 150]);
+    colorTimes.push([1, checkpoint2 + 300]);
+    colorTimes.push([2, checkpoint2 + 450]);
+
+    let checkpoint3 = checkpoint2 + 975;
+
+    for(let i = 0; i < 9; i++){
+        colorTimes.push([i, checkpoint3 + i*425]);
+    }
+
+    let checkpoint4 = checkpoint3 + 9*425 + 200;
+    colorTimes.push([8, checkpoint4]);
+    colorTimes.push([7, checkpoint4 + 200]);
+    colorTimes.push([6, checkpoint4 + 400]);
+    colorTimes.push([7, checkpoint4 + 600]);
+    colorTimes.push([8, checkpoint4 + 800]);
+
+    
+}
+
+function checkColorTimes(time){
+    for(let i = 0; i < colorTimes.length; i++){
+        if(time > colorTimes[i][1] && time < colorTimes[i][1] + 20){
+            curColors[colorTimes[i][0]] = [colors[colorTimes[i][0]][0],colors[colorTimes[i][0]][1], colors[colorTimes[i][0]][2]];
+        }
+    }
+}
+
+veryFirstMelody(2000);
+melody1(15250);
+melody1(28500);
+melody1(41750);
+melody1(55000);
 
 window.onload = function () {
 
@@ -89,34 +164,9 @@ window.onload = function () {
 
         // TIMING SECTION
         
-        // melody 1
 
-        if(time > 2000 && time < 2020)
-            curColors[0] = colors[0];
+        checkColorTimes(time);
 
-        if(time > 2425 && time < 2445)
-            curColors[1] = colors[1];
-
-        if(time > 2850 && time < 2870)
-            curColors[2] = colors[2];
-
-        if(time > 3275 && time < 3295)
-            curColors[3] = colors[3];
-
-        if(time > 3700 && time < 3720)
-            curColors[4] = colors[4];
-
-        if(time > 4125 && time < 4145)
-            curColors[5] = colors[5];
-
-        if(time > 4550 && time < 4570)
-            curColors[6] = colors[6];
-
-        if(time > 4975 && time < 4995)
-            curColors[7] = colors[7];
-
-        if(time > 5400 && time < 5420)
-            curColors[8] = colors[8];
 
         // first clap
         if(time > 27100 && time < 27150)
