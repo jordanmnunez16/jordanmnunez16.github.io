@@ -123,7 +123,7 @@ window.onload = function () {
             blinkStartTime = time;
 
         // second clap
-        if(time > 40900 && time < 40950)
+        if(time > 40700 && time < 40750)
             blinkStartTime = time;
 
 
