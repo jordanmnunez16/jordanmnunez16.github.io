@@ -20,8 +20,12 @@ curColors.push([255,255,255]);
 curColors.push([255,255,255]);
 curColors.push([255,255,255]);
 
+
 // [number, time]
 let colorTimes = [];
+
+let blinkTimes = [];
+let blinkStartTime;
 
 let incSteps = 50;
 
@@ -106,11 +110,43 @@ function checkColorTimes(time){
     }
 }
 
+function checkBlinkTimes(time){
+    for(let i = 0; i < blinkTimes.length; i++){
+        if(time > blinkTimes[i] && time < blinkTimes[i] + 50){
+            blinkStartTime = time;
+        }
+    }
+}
+
+function dropBlinks(startTime){
+    blinkTimes.push(startTime);
+    blinkTimes.push(startTime + 850);
+    blinkTimes.push(startTime + 1700);
+}
+
 veryFirstMelody(2000);
 melody1(15250);
 melody1(28500);
 melody1(41750);
+
+// exception from pattern strums
+colorTimes.push([1, 54025]);
+colorTimes.push([2, 54025 + 150]);
+colorTimes.push([1, 54025 + 300]);
+colorTimes.push([2, 54025 + 450]);
+
 melody1(55000);
+
+blinkTimes.push(27150);
+blinkTimes.push(40400);
+blinkTimes.push(47025);
+blinkTimes.push(53600);
+blinkTimes.push(56912.5);
+blinkTimes.push(60225);
+blinkTimes.push(63537.5);
+dropBlinks(67750);
+dropBlinks(81000);
+dropBlinks(94250);
 
 window.onload = function () {
 
@@ -127,9 +163,8 @@ window.onload = function () {
     let circle2x = 125;
     let circle2y = -125;
     
-    let blinkMax = 750;
+    let blinkMax = 850;
     let blinkTimer = blinkMax;
-    let blinkStartTime;
     
     context.translate(250,250);
     //context.rotate(11*this.Math.PI/9);
@@ -166,25 +201,14 @@ window.onload = function () {
         
 
         checkColorTimes(time);
+        checkBlinkTimes(time);
 
 
-        // first clap
-        if(time > 27100 && time < 27150)
-            blinkStartTime = time;
 
-        // second clap
-        if(time > 40700 && time < 40750)
-            blinkStartTime = time;
-
-
-        if(time > 68000 && time < 68050)
-            blinkStartTime = time;
+        /*
         
-        if(time > 68750 && time < 68800)
-            blinkStartTime = time;
-        
-        if(time > 69500 && time < 69550)
-            blinkStartTime = time;
+
+       
         
         if(time > 81250 && time < 81300)
             blinkStartTime = time;
@@ -203,6 +227,8 @@ window.onload = function () {
         
         if(time > 96000 && time < 96050)
             blinkStartTime = time;
+
+        */
 
         // END TIMING SECTION
         
