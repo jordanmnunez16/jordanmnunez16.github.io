@@ -268,8 +268,6 @@ window.onload = function () {
 
     let circle1x = -125;
     let circle1y = -125;
-    let circle2x = 125;
-    let circle2y = -125;
     
     let blinkMax = 850;
     let blinkTimer = blinkMax;
@@ -290,16 +288,7 @@ window.onload = function () {
         context.fillStyle = bgColor;
         context.fillRect(-250,-250, 500, 500);
 
-        context.beginPath()
-        context.arc(circle1x,circle1y,50,0, 2*Math.PI);
-        context.closePath();
-        context.fillStyle = "rgb(0,0,0)";
-        context.fill();    
-
-        context.beginPath();
-        context.arc(circle2x,circle2y,50,0, 2*Math.PI);
-        context.closePath();
-        context.fill();
+        
 
         // COLOR FADE
         for(let i = 0; i < 9; i++){
@@ -320,40 +309,32 @@ window.onload = function () {
 
 
 
-        /*
         
-
-       
-        
-        if(time > 81250 && time < 81300)
-            blinkStartTime = time;
-        
-        if(time > 82000 && time < 82050)
-            blinkStartTime = time;
-        
-        if(time > 82750 && time < 82800)
-            blinkStartTime = time;
-
-        if(time > 94500 && time < 94550)
-            blinkStartTime = time;
-        
-        if(time > 95250 && time < 95300)
-            blinkStartTime = time;
-        
-        if(time > 96000 && time < 96050)
-            blinkStartTime = time;
-
-        */
 
         // END TIMING SECTION
         
         // DRAWING SECTION
+
+        // cornea 1
+        context.beginPath()
+        context.arc(circle1x,circle1y,50,0, 2*Math.PI);
+        context.closePath();
+        context.fillStyle = "rgb(0,0,0)";
+        context.fill();    
+
+        // cornea 2
+        context.beginPath();
+        context.arc(circle1x + 250,circle1y,50,0, 2*Math.PI);
+        context.closePath();
+        context.fill();
+
         for(let circleCount = 0; circleCount < 2; circleCount++){
             context.save();
+            // Circle 1 is the one being moved in a complex way, circle 2 is just based on circle 1
             if(circleCount == 0)
                 context.translate(circle1x, circle1y);
             else
-                context.translate(circle2x, circle2y);
+                context.translate(circle1x + 250, circle1y);
             context.rotate(11*Math.PI/9);
             for(let i = 0; i < 9;i++){
                 context.beginPath();
@@ -371,12 +352,7 @@ window.onload = function () {
                 context.stroke();
                 context.rotate(2*Math.PI/9);
                 context.fillStyle = giveColor(curColors[i]);
-                /*
-                if(i == target)
-                    context.fillStyle = giveColor(colors[i]);
-                else
-                    context.fillStyle = "rgb(255,255,255)";
-                    */
+                
                 context.fill();
 
             }
