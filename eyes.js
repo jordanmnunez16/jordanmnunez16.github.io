@@ -47,6 +47,9 @@ let diffs = [];
 // [number, time]
 let bgTimes = [];
 
+let moveTimes = [];
+let moveStartTime;
+
 
 
 let bgColors = [];
@@ -131,7 +134,32 @@ function melody1(startTime){
     
 }
 
-function dropMelody(startTime){
+function dropMelody1(startTime){
+    for(let i = 0; i < 7; i++){
+        colorTimes.push([0, startTime + i*425]);
+        colorTimes.push([1, startTime + i*425]);
+        colorTimes.push([2, startTime + i*425]);
+        colorTimes.push([3, startTime + i*425]);
+        colorTimes.push([4, startTime + i*425]);
+        colorTimes.push([5, startTime + i*425]);
+        colorTimes.push([6, startTime + i*425]);
+        colorTimes.push([7, startTime + i*425]);
+        colorTimes.push([8, startTime + i*425]);
+
+        colorAssignmentTimes.push([0, (8-i) % 9, startTime + i*425 - 200]);
+        colorAssignmentTimes.push([1, (9-i) % 9, startTime + i*425 - 200]);
+        colorAssignmentTimes.push([2, (10-i) % 9, startTime + i*425 - 200]);
+        colorAssignmentTimes.push([3, (11-i) % 9, startTime + i*425 - 200]);
+        colorAssignmentTimes.push([4, (12 - i) % 9, startTime + i*425 - 200]);
+        colorAssignmentTimes.push([5, (13 - i) % 9, startTime + i*425 - 200]);
+        colorAssignmentTimes.push([6, (14 - i) % 9, startTime + i*425 - 200]);
+        colorAssignmentTimes.push([7, (15 - i) % 9, startTime + i*425 - 200]);
+        colorAssignmentTimes.push([8, (16  - i) % 9, startTime + i*425 - 200]);
+        
+    }
+}
+
+function dropMelody2(startTime){
     for(let i = 0; i < 9; i++){
         colorTimes.push([0, startTime + i*425]);
         colorTimes.push([1, startTime + i*425]);
@@ -197,6 +225,14 @@ function checkBigBlinkTimes(time){
     }
 }
 
+function checkMovementTimes(time){
+    for(let i = 0; i < moveTimes.length; i++){
+        if(time > moveTimes[i] && time < moveTimes[i] + 20){
+            moveStartTime = time;
+        }
+    }
+}
+
 function dropBlinks(startTime){
   
     for(let i = 0; i < 9; i++){
@@ -218,6 +254,31 @@ function dropBlinks(startTime){
     }
 
     blinkTimes.push(startTime + 1700);
+}
+
+// sets move time along with color that goes with movements
+function setMoveTime(startTime){
+    moveTimes.push(startTime);
+
+    colorAssignmentTimes.push([8,8,startTime + 375]);
+    colorAssignmentTimes.push([7,8,startTime + 375]);
+    colorAssignmentTimes.push([6,8, startTime + 375]);
+
+    colorAssignmentTimes.push([2,4, startTime + 375]);
+    colorAssignmentTimes.push([3,4, startTime + 375]);
+    colorAssignmentTimes.push([4,4, startTime + 375]);
+
+    colorTimes.push([6,startTime + 425]);
+    colorTimes.push([8,startTime + 637]);
+    colorTimes.push([7,startTime + 850]);
+
+    colorTimes.push([4,startTime + 1275]);
+    colorTimes.push([2,startTime + 1487]);
+    colorTimes.push([3,startTime + 1700]);
+
+    colorTimes.push([6,startTime + 2125]);
+    colorTimes.push([8,startTime + 2337]);
+    colorTimes.push([7,startTime + 2550]);
 }
 
 veryFirstMelody(2000);
@@ -248,19 +309,23 @@ dropBlinks(94250);
 
 bigBlinkTimes.push(71075);
 
-dropMelody(71500);
-dropMelody(78125);
-dropMelody(84750);
-dropMelody(91375);
+dropMelody1(71500);
+dropMelody2(78125);
+dropMelody1(84750);
+dropMelody2(91375);
 
 bgTimes.push([1, 71500]);
+
+//setMoveTime(1000);
+setMoveTime(74475);
+setMoveTime(87725);
+
 
 
 window.onload = function () {
 
     let canvas = /** @type {HTMLCanvasElement} */ (document.getElementById("canvas1"));
     let context = canvas.getContext('2d');
-    let target = 10;
     let time;
     let offset;
     let started = false;
@@ -270,8 +335,10 @@ window.onload = function () {
     let circle1y = -125;
     
     let blinkMax = 850;
+    let moveMax = blinkMax*3;
     let blinkTimer = blinkMax;
     let bigBlinkTimer = blinkMax;
+    let moveTimer = moveMax;
     
     context.translate(250,250);
     //context.rotate(11*this.Math.PI/9);
@@ -283,6 +350,7 @@ window.onload = function () {
         time = (performance.now() - offset);
         blinkTimer = time - blinkStartTime;
         bigBlinkTimer = time - bigBlinkStartTime;
+        moveTimer = time - moveStartTime;
 
         checkBgTimes(time);
         context.fillStyle = bgColor;
@@ -306,6 +374,7 @@ window.onload = function () {
         checkColorTimes(time);
         checkBlinkTimes(time);
         checkBigBlinkTimes(time);
+        checkMovementTimes(time);
 
 
 
@@ -314,6 +383,41 @@ window.onload = function () {
         // END TIMING SECTION
         
         // DRAWING SECTION
+
+        // location of eyes (for movements)
+        
+        if(moveTimer <= moveMax){
+            if(moveTimer <=425){
+                circle1x = -137.94 + 50*Math.cos(5*Math.PI/12 + Math.PI/6 * moveTimer/425);
+                circle1y = -76.7 - 50*Math.sin(5*Math.PI/12 + Math.PI/6 * moveTimer/425);
+            }
+            else if (moveTimer <= 637){
+                circle1y = -125 - 10 * (moveTimer-425)/212; 
+            }
+            else if (moveTimer <= 850){
+                circle1y = -135 + 10*(moveTimer-637)/213;
+            }
+            else if(moveTimer <= 1275){
+                circle1x = -125 + 100*Math.cos(7*Math.PI/12 - Math.PI/6 * (moveTimer - 850)/425);
+                circle1y = -28.4 - 100*Math.sin(7*Math.PI/12 - Math.PI/6 * (moveTimer - 850)/425);
+            }
+            else if(moveTimer <= 1487){
+                circle1y = -125 - 10 * (moveTimer-1275)/212; 
+            }
+            else if (moveTimer <= 1700){
+                circle1y = -135 + 10*(moveTimer-1487)/213;
+            }
+            else if(moveTimer <= 2125){
+                circle1x = -112.06 + 50*Math.cos(5*Math.PI/12 + Math.PI/6 * (moveTimer-1700)/425);
+                circle1y = -76.7 - 50*Math.sin(5*Math.PI/12 + Math.PI/6 * (moveTimer-1700)/425);
+            }
+            else if(moveTimer <= 2337){
+                circle1y = -125 - 10 * (moveTimer-2125)/212; 
+            }
+            else{
+                circle1y = -135 + 10*(moveTimer-2337)/213;
+            }
+        }
 
         // cornea 1
         context.beginPath()
@@ -328,6 +432,7 @@ window.onload = function () {
         context.closePath();
         context.fill();
 
+        // drawing eyes w colors and shit
         for(let circleCount = 0; circleCount < 2; circleCount++){
             context.save();
             // Circle 1 is the one being moved in a complex way, circle 2 is just based on circle 1
